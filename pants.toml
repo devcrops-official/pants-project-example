@@ -1,0 +1,60 @@
+[GLOBAL]
+pants_version = "2.13.0a1"
+use_deprecated_directory_cli_args_semantics = "false"
+use_deprecated_pex_binary_run_semantics = "false"
+pythonpath = ["%(buildroot)s/pants-plugins"]
+backend_packages = [
+  "pants.backend.python",
+  "pants.backend.python.lint.black",
+  "pants.backend.python.lint.isort",
+  "pants.backend.plugin_development",
+  "pants.backend.python.typecheck.mypy",
+  "pants.backend.experimental.python",
+  "setup_py"
+]
+pants_ignore = ["!*_lock.txt"]
+
+[source]
+marker_filenames = ["BUILD"]
+
+[python]
+interpreter_constraints = [">=3.7"]
+tailor_ignore_solitary_init_files = false
+enable_resolves = true
+default_resolve = "default"
+lockfile_generator = "pex"
+
+[python-infer]
+init_files = "always"
+
+[python.resolves]
+default = "3rdparty/python/default/requirements_lock.txt"
+project-a = "3rdparty/python/project-a/requirements_lock.txt"
+project-b = "3rdparty/python/project-b/requirements_lock.txt"
+
+
+[setup-py-generation]
+generate_setup_default = true
+
+[test]
+use_coverage = true
+report = true
+#debug = true
+
+[coverage-py]
+report = ["xml"]
+global_report = true
+
+[pytest]
+version = "pytest~=7.1"
+extra_requirements = [
+  "pytest-cov~=3.0",
+  "pytest-mock~=3.7",
+]
+junit_family = "xunit2"
+args = ["-v --tb=line"]
+lockfile = "<none>"
+
+
+[anonymous-telemetry] 
+enabled = false
